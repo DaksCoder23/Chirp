@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #f8fbff, #eaf3ff);
+    background: linear-gradient(135deg, #d7dde3, #cce0ff);
     font-family: "Nunito Sans", sans-serif;
     color: #333;
     padding: 20px;
@@ -31,7 +31,7 @@
   
   /* Stat Tiles */
   .stat-tile {
-    background-color: white;
+    background-color: #f0f8ff;
     border-radius: 15px;
     padding: 20px;
     flex: 1;

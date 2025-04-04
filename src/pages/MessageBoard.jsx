@@ -12,9 +12,10 @@ const MessageBoard = () => {
 
   useEffect(() => {
     // Get current user from local storage
+    /*
     const userJson = localStorage.getItem('user');
     if (!userJson) {
-      navigate('/login');
+     navigate('/login');
       return;
     }
     
@@ -22,7 +23,7 @@ const MessageBoard = () => {
     if (!token) {
       navigate('/login');
       return;
-    }
+    }*/
     
     // Fetch conversations
     const fetchConversations = async () => {
