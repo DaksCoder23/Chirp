@@ -25,7 +25,10 @@ const Home = () => {
 
     fetchCounts();
   }, []);
-
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Clear authentication token
+    navigate("/"); // Redirect to login/signup
+  };
   return (
     <div className="home-container">
       {/* Sidebar */}
@@ -44,7 +47,9 @@ const Home = () => {
                 Messages
               </a>
             </li>
+            
           </ul>
+          <button className="logout-btn" onClick={handleLogout}>Logout</button>
         </nav>
 
         {/* Tiles Section */}
@@ -57,7 +62,9 @@ const Home = () => {
           <div className="tile">Tile 3</div>
           <div className="tile">Tile 4</div>
         </div>
+        <div className="wave-footer"></div>
       </div>
+      
     </div>
   );
 };

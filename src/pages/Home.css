@@ -2,14 +2,14 @@
 .home-container {
   display: flex;
   height: 100vh;
-  background: linear-gradient(135deg, #eff1f3, #eef6ff);
+  background: linear-gradient(135deg, #d7dde3, #cce0ff);
   font-family: "Nunito Sans", sans-serif;
 }
 
 /* Sidebar */
 .sidebar {
   width: 250px;
-  background-color: #e0f2fe;
+  background-color: #ccebff;
   border-right: 1px solid #cae8ff;
   display: flex;
   flex-direction: column;
@@ -31,7 +31,8 @@
 }
 
 .manage-user-btn {
-  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+  background: linear-gradient(135deg, #4db6ac, #26a69a); /* Muted teals */
+  box-shadow: 0 4px 6px rgba(38, 166, 154, 0.2);
   color: white;
   padding: 12px 24px;
   border: none;
@@ -46,9 +47,8 @@
 
 .manage-user-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(14, 165, 233, 0.3);
+  box-shadow: 0 6px 8px rgba(38, 166, 154, 0.3);
 }
-
 /* Main Content */
 .main-content {
   flex: 1;
@@ -63,7 +63,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px 25px;
-  background-color: #ffffff;
+  background-color: #f0f8ff;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   border-radius: 16px;
   margin-bottom: 25px;
@@ -104,7 +104,50 @@
 .navbar a:hover::after {
   width: 100%;
 }
+/* Logout Button in Navbar */
+.navbar .logout-btn {
+  background: none;
+  border: none;
+  padding: 10px 15px; /* Adjust padding to match link spacing */
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 600;
+  font-size: inherit; /* Inherit font size from navbar */
+  color: #0284c7; /* Match link color */
+  cursor: pointer;
+  transition: color 0.2s;
+  position: relative; /* For the after pseudo-element */
+  margin-left: auto; /* Push to the right end */
+  margin-right: 0; /* Ensure it's at the very right */
+}
 
+.navbar .logout-btn:hover {
+  color: #0ea5e9; /* Match link hover color */
+}
+
+.navbar .logout-btn::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #0ea5e9; /* Match link hover underline color */
+  transition: width 0.3s;
+}
+
+.navbar .logout-btn:hover::after {
+  width: 100%;
+}
+
+/* Adjust Navbar ul to potentially accommodate the button */
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+  align-items: center; /* Vertically align items including the button */
+}
 /* Layout for tiles and isometric image */
 .content-wrapper {
   display: flex;
@@ -122,7 +165,7 @@
 }
 
 .tile {
-  background-color: #fff9f9;
+  background-color: #f0f8ff;
   padding: 25px 20px;
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
