@@ -1,0 +1,249 @@
+/* Home Page Container */
+.home-container {
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(135deg, #eff1f3, #eef6ff);
+  font-family: "Nunito Sans", sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background-color: #e0f2fe;
+  border-right: 1px solid #cae8ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+}
+
+.logo {
+  align-self: flex-start;
+  margin-bottom: 50px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: auto;
+  margin-bottom: 30px;
+}
+
+.manage-user-btn {
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 6px rgba(14, 165, 233, 0.2);
+  width: 100%;
+  margin-top: auto;
+}
+
+.manage-user-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(14, 165, 233, 0.3);
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  margin-bottom: 25px;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #0284c7;
+  font-weight: 600;
+  position: relative;
+  padding: 5px 0;
+  transition: color 0.2s;
+}
+
+.navbar a:hover {
+  color: #0ea5e9;
+}
+
+.navbar a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #0ea5e9;
+  transition: width 0.3s;
+}
+
+.navbar a:hover::after {
+  width: 100%;
+}
+
+/* Layout for tiles and isometric image */
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Tiles Layout */
+.tiles-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 25px;
+  margin-bottom: 25px;
+}
+
+.tile {
+  background-color: #fff9f9;
+  padding: 25px 20px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+}
+
+.tile:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+}
+
+.tile-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: #0ea5e9;
+}
+
+.tile-title {
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.tile-description {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+/* Isometric Image */
+.isometric-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 35%;
+  height: 35%;
+  pointer-events: none;
+}
+
+.isometric-img {
+  width: 100%;
+  max-width: 350px;
+  filter: drop-shadow(0 15px 25px rgba(14, 165, 233, 0.25));
+  transition: transform 0.5s;
+  pointer-events: auto;
+}
+
+.isometric-img:hover {
+  transform: translateY(-10px) scale(1.05);
+}
+
+/* Ensure the content wrapper has relative position for absolute positioning of the isometric image */
+.main-content {
+  position: relative;
+}
+
+/* Additional Elements for Bird-Inspired Theme */
+.bird-accent {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: #fcd34d;
+  border-radius: 50%;
+  opacity: 0.6;
+  top: 20px;
+  right: 40px;
+}
+
+/* Subtle wave animation for bottom of page */
+.wave-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(90deg, #bae6fd, #e0f2fe, #bae6fd);
+  border-top-left-radius: 100% 80%;
+  border-top-right-radius: 100% 80%;
+  opacity: 0.4;
+  z-index: -1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .isometric-container {
+    position: static;
+    transform: none;
+    margin: 30px auto;
+    width: 80%;
+    height: auto;
+  }
+  
+  .tiles-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    padding: 15px;
+    border-right: none;
+    border-bottom: 1px solid #cae8ff;
+  }
+  
+  .tiles-container {
+    grid-template-columns: 1fr;
+  }
+}
