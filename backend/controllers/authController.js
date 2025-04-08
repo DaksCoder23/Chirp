@@ -32,7 +32,7 @@ exports.signup = async (req, res) => {
       const created_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
       
       // Insert user into DB
-      const query = "INSERT INTO users (name, email, mobile, password, created_at) VALUES (?, ?, ?, ?, ?)";
+      const query = "INSERT INTO users (name, email, mobile, password) VALUES (?, ?, ?, ?)";
       db.query(query, [name, email, mobile, hashedPassword, created_at], (err, results) => {
         if (err) {
           console.error("Database error:", err);
