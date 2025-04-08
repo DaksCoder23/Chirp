@@ -33,7 +33,7 @@ exports.signup = async (req, res) => {
       
       // Insert user into DB
       const query = "INSERT INTO users (name, email, mobile, password) VALUES (?, ?, ?, ?)";
-      db.query(query, [name, email, mobile, hashedPassword, created_at], (err, results) => {
+      db.query(query, [name, email, mobile, hashedPassword], (err, results) => {
         if (err) {
           console.error("Database error:", err);
           return res.status(500).json({ message: "Error inserting data" });
