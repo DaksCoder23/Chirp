@@ -10,7 +10,12 @@ const conversationRoutes = require("./routes/conversationRoutes");
 const createUserTable = require("./models/User");
 const setupWebSocket = require("./websocket/handler");
 const authenticateToken = require("./middleware/authMiddleware");
-
+const requestStats = {
+  total: 0,
+  byEndpoint: {},
+  byMethod: {},
+  lastReset: new Date()
+};
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
@@ -56,7 +61,23 @@ const trackActiveUser = (req, res, next) => {
 };
 
 app.use(trackActiveUser);
+// Request counter middleware
+const countRequests = (req, res, next) => {
+  // Increment total requests
+  requestStats.total++;
+  
+  // Count by endpoint
+  const endpoint = req.originalUrl;
+  requestStats.byEndpoint[endpoint] = (requestStats.byEndpoint[endpoint] || 0) + 1;
+  
+  // Count by method
+  const method = req.method;
+  requestStats.byMethod[method] = (requestStats.byMethod[method] || 0) + 1;
+  
+  next();
+};
 
+app.use(countRequests);
 // ✅ API to get total users from MySQL
 app.get("/api/users/count", (req, res) => {
   db.query("SELECT COUNT(*) AS totalUsers FROM users", (err, results) => {
@@ -183,7 +204,33 @@ app.get("/api/platform-usage", authenticateToken, (req, res) => {
     });
   });
 });
+// API to get basic request count
+app.get("/api/request-count", (req, res) => {
+  res.json({ 
+    totalRequests: requestStats.total,
+    lastReset: requestStats.lastReset
+  });
+});
 
+// API to get detailed request stats (with authentication)
+app.get("/api/request-stats", authenticateToken, (req, res) => {
+  res.json({
+    totalRequests: requestStats.total,
+    byEndpoint: requestStats.byEndpoint,
+    byMethod: requestStats.byMethod,
+    lastReset: requestStats.lastReset
+  });
+});
+
+// API to reset request stats (with authentication)
+app.post("/api/reset-request-stats", authenticateToken, (req, res) => {
+  requestStats.total = 0;
+  requestStats.byEndpoint = {};
+  requestStats.byMethod = {};
+  requestStats.lastReset = new Date();
+  
+  res.json({ message: "Request stats reset successfully", timestamp: requestStats.lastReset });
+});
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/conversations", conversationRoutes);

@@ -5,7 +5,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Home from "./pages/Home";
 import ActiveUsers from "./pages/ActiveUsers";
-
+import RequestAnalytics from "./pages/RequestAnalytics";
 
 const App = () => {
   return (
@@ -20,6 +20,7 @@ const App = () => {
         <Route path="/home" element={<Home />} />
         
         <Route path="/active-users" element={<ActiveUsers />} />
+        <Route path="/request-analytics" element={<RequestAnalytics />} />
         {/* Login Route */}
         <Route
           path="/"
