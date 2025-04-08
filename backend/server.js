@@ -9,6 +9,7 @@ const authRoutes = require("./routes/authRoutes");
 const conversationRoutes = require("./routes/conversationRoutes");
 const createUserTable = require("./models/User");
 const setupWebSocket = require("./websocket/handler");
+const authenticateToken = require("./middleware/authMiddleware");
 
 dotenv.config();
 const app = express();
@@ -22,7 +23,6 @@ app.use(cors());
 createUserTable(); // Create MySQL users table if it doesn't exist
 connectMongoDB(); // Connect to MongoDB
 
-// Store active users in memory
 // Store active users in memory
 const activeUsers = new Set();
 
@@ -57,7 +57,6 @@ const trackActiveUser = (req, res, next) => {
 
 app.use(trackActiveUser);
 
-
 // ✅ API to get total users from MySQL
 app.get("/api/users/count", (req, res) => {
   db.query("SELECT COUNT(*) AS totalUsers FROM users", (err, results) => {
@@ -74,8 +73,7 @@ app.get("/api/active-users-count", (req, res) => {
 });
 
 // ✅ API to get both total users & active users in one request
-// In your server.js
-app.get("/api/user-stats", (req, res) => {
+app.get("/api/user-stats", authenticateToken, (req, res) => {
   db.query("SELECT COUNT(*) AS totalUsers FROM users", (err, results) => {
     if (err) {
       console.error("Database error:", err);
@@ -85,11 +83,11 @@ app.get("/api/user-stats", (req, res) => {
     res.json({ totalUsers, activeUsers: activeUsers.size });
   });
 });
-// Add these to your server.js or create separate route files
 
 // Recent signups API endpoint
-app.get("/api/recent-signups", (req, res) => {
-  const query = "SELECT id, name, email, created_at as joinedDate FROM users ORDER BY created_at DESC LIMIT 5";
+app.get("/api/recent-signups", authenticateToken, (req, res) => {
+  // Modified query to remove created_at/joinedDate
+  const query = "SELECT id, name, email FROM users ORDER BY id DESC LIMIT 5";
   
   db.query(query, (err, results) => {
     if (err) {
@@ -102,7 +100,7 @@ app.get("/api/recent-signups", (req, res) => {
 });
 
 // User activity timeline endpoint
-app.get("/api/user-activity", (req, res) => {
+app.get("/api/user-activity", authenticateToken, (req, res) => {
   // This would typically come from a log table or analytics database
   // For demonstration, we'll generate sample data
   const today = new Date();
@@ -123,7 +121,7 @@ app.get("/api/user-activity", (req, res) => {
 });
 
 // Active time metrics endpoint
-app.get("/api/active-time", (req, res) => {
+app.get("/api/active-time", authenticateToken, (req, res) => {
   // This would typically come from session data or analytics
   // For demonstration, we'll provide sample data
   res.json({
@@ -134,6 +132,58 @@ app.get("/api/active-time", (req, res) => {
     }
   });
 });
+
+// New endpoints for user-type and platform statistics
+app.get("/api/user-types", authenticateToken, (req, res) => {
+  // This would ideally come from your database with proper queries
+  // For now, we'll provide a sample implementation
+  db.query("SELECT COUNT(*) AS totalUsers FROM users", (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    
+    const totalUsers = results[0].totalUsers;
+    
+    // Calculate approximate distributions based on total users
+    // In a real app, you'd query this data from your database
+    const regularUsers = Math.floor(totalUsers * 0.8);
+    const premiumUsers = Math.floor(totalUsers * 0.15);
+    const adminUsers = Math.floor(totalUsers * 0.05);
+    
+    res.json({
+      userTypes: [
+        { type: "Regular Users", count: regularUsers, icon: "👤" },
+        { type: "Premium Users", count: premiumUsers, icon: "⭐" },
+        { type: "Admin Users", count: adminUsers, icon: "👑" }
+      ]
+    });
+  });
+});
+
+app.get("/api/platform-usage", authenticateToken, (req, res) => {
+  // This would ideally come from your database with proper queries
+  // For now, we'll provide a sample implementation
+  db.query("SELECT COUNT(*) AS totalUsers FROM users", (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    
+    const totalUsers = results[0].totalUsers;
+    
+    // Calculate approximate distributions based on total users
+    // In a real app, you'd query this data from your database
+    res.json({
+      platformData: [
+        { platform: "Web App", users: Math.floor(totalUsers * 0.45) },
+        { platform: "Mobile App", users: Math.floor(totalUsers * 0.35) },
+        { platform: "Desktop App", users: Math.floor(totalUsers * 0.20) }
+      ]
+    });
+  });
+});
+
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/conversations", conversationRoutes);

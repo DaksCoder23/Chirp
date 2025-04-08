@@ -5,7 +5,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Home from "./pages/Home";
 import ActiveUsers from "./pages/ActiveUsers";
-import MessageBoard from "./pages/MessageBoard";
+
 
 const App = () => {
   return (
@@ -18,7 +18,7 @@ const App = () => {
       <Routes>
         {/* Route for Home page to take full screen */}
         <Route path="/home" element={<Home />} />
-        <Route path="/message-board" element={<MessageBoard />} />
+        
         <Route path="/active-users" element={<ActiveUsers />} />
         {/* Login Route */}
         <Route
