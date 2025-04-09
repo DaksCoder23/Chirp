@@ -6,6 +6,8 @@ import Signup from "./components/Signup";
 import Home from "./pages/Home";
 import ActiveUsers from "./pages/ActiveUsers";
 import RequestAnalytics from "./pages/RequestAnalytics";
+import MessageBoard from "./pages/MessageBoard"; // Import MessageBoard
+import Conversation from "./components/Conversation"; // Import Conversation component
 
 const App = () => {
   return (
@@ -21,6 +23,11 @@ const App = () => {
         
         <Route path="/active-users" element={<ActiveUsers />} />
         <Route path="/request-analytics" element={<RequestAnalytics />} />
+        
+        {/* Messages routes */}
+        <Route path="/messages" element={<MessageBoard />} />
+        <Route path="/conversation/:conversationId" element={<Conversation />} />
+        
         {/* Login Route */}
         <Route
           path="/"

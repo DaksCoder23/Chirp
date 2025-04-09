@@ -78,11 +78,28 @@ const Login = () => {
       const data = await res.json();
 
       if (res.ok) {
+        // Store token in localStorage
+        localStorage.setItem("token", data.token);
         
-        localStorage.setItem("token", data.token); // Store token in localStorage
-        navigate("/home"); // Redirect to home page after login
+        // Store user information in localStorage
+        // Assuming the backend returns user data along with the token
+        // If not, you might need to make another request to get user data
+        if (data.user) {
+          localStorage.setItem("user", JSON.stringify(data.user));
+        } else {
+          // If the backend doesn't return user data, create a minimal user object
+          // based on the login information
+          const minimalUser = {
+            email: formData.email,
+            // Other fields if available
+          };
+          localStorage.setItem("user", JSON.stringify(minimalUser));
+        }
+        
+        // Redirect to home after login
+        navigate("/home");
       } else {
-        alert(data.message); // Show error message from backend
+        alert(data.message || "Login failed. Please check your credentials.");
       }
     } catch (error) {
       console.error("Error during login:", error);
@@ -93,7 +110,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2>Login</h2>
+        <h2>Login to Chirp</h2>
         <form onSubmit={handleSubmit}>
           {/* Email Input */}
           <div className="input-group">
@@ -129,7 +146,7 @@ const Login = () => {
 
         {/* Link to Signup */}
         <p className="signup-link">
-          Don’t have an account?{" "}
+          Don't have an account?{" "}
           <span onClick={() => navigate("/signup")}>Sign up here</span>
         </p>
       </div>

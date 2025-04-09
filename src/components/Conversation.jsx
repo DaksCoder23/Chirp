@@ -28,7 +28,7 @@ const Conversation = () => {
     const fetchConversation = async () => {
       try {
         const response = await axios.get(`/api/conversations/${conversationId}`, {
-          headers: { Authorization: token }
+          headers: { Authorization: `Bearer ${token}` }
         });
         
         setMessages(response.data.messages);
@@ -37,7 +37,7 @@ const Conversation = () => {
         
         // Mark messages as read
         axios.post(`/api/conversations/${conversationId}/read`, {}, {
-          headers: { Authorization: token }
+          headers: { Authorization: `Bearer ${token}` }
         });
         
       } catch (err) {
@@ -80,7 +80,7 @@ const Conversation = () => {
         
         // Mark as read since we're in the conversation
         axios.post(`/api/conversations/${conversationId}/read`, {}, {
-          headers: { Authorization: token }
+          headers: { Authorization: `Bearer ${token}` }
         });
       }
     };
@@ -109,7 +109,7 @@ const Conversation = () => {
     try {
       const response = await axios.post(`/api/conversations/${conversationId}/messages`, 
         { content: newMessage },
-        { headers: { Authorization: token } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       
       // Add the new message to the state

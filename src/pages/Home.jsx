@@ -53,7 +53,7 @@ const Home = () => {
           <ul>
             <li><a href="#about">About</a></li>
             <li>
-              <a onClick={() => navigate("/MessageBoard")} style={{ cursor: "pointer" }}>
+              <a onClick={() => navigate("/messages")} style={{ cursor: "pointer" }}>
                 Messages
               </a>
             </li>

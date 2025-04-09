@@ -1,158 +1,174 @@
+/* Variables for Chirp Theme (Consistent with app.css) */
+:root {
+  --chirp-primary: #2BB0ED;
+  --chirp-secondary: #FFB344;
+  --chirp-gradient: linear-gradient(to right, #2BB0ED, #5ED0FA);
+  --chirp-gradient-hover: linear-gradient(to right, #5ED0FA, #2BB0ED);
+  --chirp-background: #F8FAFC;
+  --chirp-text: #334E68;
+  --chirp-text-light: #627D98;
+  --chirp-shadow: 0 10px 25px rgba(43, 176, 237, 0.1);
+  --chirp-border: #E4E7EB; /* Light gray for borders */
+}
+
 .message-board-container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 30px 20px;
-  }
-  
-  .message-board-container h1 {
-    text-align: center;
-    margin-bottom: 35px;
-    color: #1a1a1a;
-    font-size: 2.2rem;
-    background: linear-gradient(45deg, #1da1f2, #7ac9f3);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  
-  .new-conversation-form {
-    display: flex;
-    margin-bottom: 35px;
-    gap: 12px;
-  }
-  
-  .new-conversation-form input {
-    flex: 1;
-    padding: 14px;
-    border: 1px solid #e0e0e0;
-    border-radius: 20px;
-    font-size: 16px;
-    transition: all 0.2s;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
-  }
-  
-  .new-conversation-form input:hover {
-    border-color: #c0c0c0;
-  }
-  
-  .new-conversation-form button {
-    padding: 12px 28px;
-    background: linear-gradient(45deg, #1da1f2, #5cb3f0);
-    color: white;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    box-shadow: 0 3px 6px rgba(29, 161, 242, 0.2);
-    transition: all 0.2s;
-  }
-  
-  .new-conversation-form button:hover {
-    background: linear-gradient(45deg, #0d8bd9, #4da5e9);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(29, 161, 242, 0.3);
-  }
-  
-  .conversation-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 24px;
-  }
-  
-  .conversation-tile {
-    display: flex;
-    padding: 18px;
-    border: 1px solid #eaeaea;
-    border-radius: 16px;
-    cursor: pointer;
-    position: relative;
-    background-color: white;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
-    transition: all 0.3s ease;
-  }
-  
-  .conversation-tile:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
-    border-color: #d0e4f5;
-  }
-  
-  .avatar {
-    width: 55px;
-    height: 55px;
-    background: linear-gradient(45deg, #1da1f2, #5cb3f0);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-    font-size: 22px;
-    margin-right: 18px;
-    box-shadow: 0 3px 6px rgba(29, 161, 242, 0.2);
-  }
-  
-  .conversation-info {
-    flex: 1;
-    overflow: hidden;
-  }
-  
-  .conversation-info h3 {
-    margin: 0 0 8px 0;
-    color: #1a1a1a;
-    font-size: 17px;
-  }
-  
-  .last-message {
-    color: #666;
-    margin: 0 0 8px 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 15px;
-  }
-  
-  .timestamp {
-    color: #999;
-    font-size: 13px;
-    margin: 0;
-  }
-  
-  .unread-badge {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background-color: #ff6b6b;
-    color: white;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: bold;
-    box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
-  }
-  
-  .loading, .error {
-    text-align: center;
-    padding: 50px;
-    font-size: 18px;
-    border-radius: 12px;
-    background-color: white;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
-    margin: 20px auto;
-    max-width: 500px;
-  }
-  
-  .error {
-    color: #ff5a5a;
-    border-left: 4px solid #ff5a5a;
-  }
-  
-  .loading {
-    color: #666;
-    border-left: 4px solid #1da1f2;
-  }
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.message-board-container h1 {
+  text-align: center;
+  margin-bottom: 35px;
+  color: var(--chirp-text); /* Use Chirp text color as fallback */
+  font-size: 2.2rem;
+  background: var(--chirp-gradient); /* Use Chirp gradient for heading */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.back-button {
+  background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 10px;
+  box-shadow: 0 4px 6px rgba(14, 165, 233, 0.2);
+}
+
+.back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(14, 165, 233, 0.25);
+}
+
+.back-button:active {
+  transform: translateY(1px);
+}
+
+.new-conversation-form {
+  display: flex;
+  margin-bottom: 35px;
+  gap: 12px;
+}
+
+.new-conversation-form input {
+  flex: 1;
+  padding: 14px;
+  border: 1px solid var(--chirp-border); /* Use Chirp border color */
+  border-radius: 20px;
+  font-size: 16px;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  color: var(--chirp-text); /* Use Chirp text color */
+}
+
+.new-conversation-form input:hover {
+  border-color: var(--chirp-primary); /* Use Chirp primary color on hover */
+}
+
+.new-conversation-form button {
+  padding: 12px 28px;
+  background: var(--chirp-gradient); /* Use Chirp gradient */
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: var(--chirp-shadow); /* Use Chirp shadow */
+  transition: all 0.2s;
+}
+
+.new-conversation-form button:hover {
+  background: var(--chirp-gradient-hover); /* Use Chirp gradient hover */
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(43, 176, 237, 0.3); /* Adjust shadow color */
+}
+
+.conversation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.conversation-tile {
+  display: flex;
+  padding: 18px;
+  border: 1px solid var(--chirp-border); /* Use Chirp border color */
+  border-radius: 16px;
+  cursor: pointer;
+  position: relative;
+  background-color: white;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+}
+
+.conversation-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  border-color: var(--chirp-primary); /* Use Chirp primary color on hover */
+}
+
+.avatar {
+  width: 55px;
+  height: 55px;
+  background: var(--chirp-gradient); /* Use Chirp gradient */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 22px;
+  margin-right: 18px;
+  box-shadow: 0 3px 6px rgba(43, 176, 237, 0.2); /* Adjust shadow color */
+}
+
+.conversation-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.conversation-info h3 {
+  margin: 0 0 8px 0;
+  color: var(--chirp-text); /* Use Chirp text color */
+  font-size: 17px;
+}
+
+.last-message {
+  color: var(--chirp-text-light); /* Use Chirp light text color */
+  margin: 0 0 8px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 15px;
+}
+
+.timestamp {
+  color: var(--chirp-text-light); /* Use Chirp light text color */
+  font-size: 13px;
+  margin: 0;
+}
+
+.unread-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: var(--chirp-secondary); /* Use Chirp secondary color */
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(255, 179, 68, 0.3); /* Adjust shadow color */
+}

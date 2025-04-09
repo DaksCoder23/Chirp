@@ -3,6 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './MessageBoard.css';
 
+// Set the base URL for all axios requests
+// You need to set this to match your backend server URL
+axios.defaults.baseURL = 'http://localhost:5000'; // Update this to your backend URL
+
 const MessageBoard = () => {
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,10 +16,9 @@ const MessageBoard = () => {
 
   useEffect(() => {
     // Get current user from local storage
-    /*
     const userJson = localStorage.getItem('user');
     if (!userJson) {
-     navigate('/login');
+      navigate('/login');
       return;
     }
     
@@ -23,20 +26,29 @@ const MessageBoard = () => {
     if (!token) {
       navigate('/login');
       return;
-    }*/
+    }
     
     // Fetch conversations
     const fetchConversations = async () => {
       try {
+        console.log('Fetching conversations with token:', token);
         const response = await axios.get('/api/conversations', {
-          headers: { Authorization: token }
+          headers: { Authorization: `Bearer ${token}` }
         });
-        setConversations(response.data);
+        
+        console.log('Conversations response:', response.data);
+        
+        if (Array.isArray(response.data)) {
+          setConversations(response.data);
+        } else {
+          console.error('Unexpected response format:', response.data);
+          setConversations([]);
+        }
         setLoading(false);
       } catch (err) {
+        console.error('Failed to load conversations:', err.response?.data || err.message);
         setError('Failed to load conversations');
         setLoading(false);
-        console.error(err);
       }
     };
     
@@ -44,32 +56,45 @@ const MessageBoard = () => {
     
     // Set up websocket connection
     const setupWebSocket = () => {
-      const ws = new WebSocket('ws://' + window.location.hostname + ':5000');
-      
-      ws.onopen = () => {
-        // Send authentication
-        ws.send(JSON.stringify({
-          type: 'auth',
-          token
-        }));
-      };
-      
-      ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
+      try {
+        const ws = new WebSocket('ws://' + window.location.hostname + ':5000');
         
-        if (data.type === 'new_message') {
-          // Refresh conversations to update last message
-          fetchConversations();
-        }
-      };
-      
-      return ws;
+        ws.onopen = () => {
+          console.log('WebSocket connected');
+          // Send authentication
+          ws.send(JSON.stringify({
+            type: 'auth',
+            token: token
+          }));
+        };
+        
+        ws.onmessage = (event) => {
+          const data = JSON.parse(event.data);
+          console.log('WebSocket message received:', data);
+          
+          if (data.type === 'new_message') {
+            // Refresh conversations to update last message
+            fetchConversations();
+          }
+        };
+        
+        ws.onerror = (error) => {
+          console.error('WebSocket error:', error);
+        };
+        
+        return ws;
+      } catch (error) {
+        console.error('Error setting up WebSocket:', error);
+        return null;
+      }
     };
     
     const ws = setupWebSocket();
     
     return () => {
-      ws.close();
+      if (ws) {
+        ws.close();
+      }
     };
   }, [navigate]);
 
@@ -85,16 +110,34 @@ const MessageBoard = () => {
     }
     
     try {
+      const token = localStorage.getItem('token');
+      console.log('Starting conversation with:', newMessageEmail);
+      console.log('Using token:', token);
+      
       const response = await axios.post('/api/conversations', 
         { recipientEmail: newMessageEmail },
-        { headers: { Authorization: localStorage.getItem('token') } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       
+      console.log('New conversation response:', response.data);
+      
       // Navigate to the new conversation
-      navigate(`/conversation/${response.data.conversationId}`);
+      if (response.data && response.data.conversationId) {
+        navigate(`/conversation/${response.data.conversationId}`);
+      } else {
+        console.error('Invalid response format:', response.data);
+        setError('Invalid response from server');
+      }
     } catch (err) {
-      setError('Failed to start conversation. User may not exist.');
-      console.error(err);
+      console.error('Error creating conversation:', err.response?.data || err.message);
+      if (err.response?.status === 404) {
+        setError('API endpoint not found. Check your server configuration.');
+      } else if (err.response?.status === 403 || err.response?.status === 401) {
+        setError('Authentication error. Please log in again.');
+        navigate('/login');
+      } else {
+        setError(err.response?.data?.message || 'Failed to start conversation');
+      }
     }
   };
 
@@ -114,10 +157,11 @@ const MessageBoard = () => {
           required
         />
         <button type="submit">Start Conversation</button>
+        
       </form>
       
       <div className="conversation-grid">
-        {conversations.length === 0 ? (
+        {!Array.isArray(conversations) || conversations.length === 0 ? (
           <p>No conversations yet. Start one by entering an email above!</p>
         ) : (
           conversations.map((convo) => (
@@ -127,10 +171,11 @@ const MessageBoard = () => {
               onClick={() => handleConversationClick(convo._id)}
             >
               <div className="avatar">
-                {convo.participant.name.charAt(0).toUpperCase()}
+                {convo.participant && convo.participant.name ? 
+                  convo.participant.name.charAt(0).toUpperCase() : '?'}
               </div>
               <div className="conversation-info">
-                <h3>{convo.participant.name}</h3>
+                <h3>{convo.participant ? (convo.participant.name || convo.participant.email) : 'Unknown User'}</h3>
                 <p className="last-message">
                   {convo.lastMessage?.content || 'No messages yet'}
                 </p>
@@ -145,6 +190,11 @@ const MessageBoard = () => {
           ))
         )}
       </div>
+      <div className="home-button-container">
+        <button className="back-button" onClick={() => navigate('/home')}>Back to Dashboard</button>
+      </div>
+      
+      
     </div>
   );
 };
